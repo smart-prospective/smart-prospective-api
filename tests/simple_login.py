@@ -1,0 +1,19 @@
+from os import environ
+from smart_prospective_api import SPApi, APIError
+
+PUBLIC_KEY = environ["SP_PUBLIC_KEY"]
+PRIVATE_KEY = environ["SP_PRIVATE_KEY"]
+
+
+try:
+    # Setup the API credencial (do not perform any request at this moment)
+    # Note: The public key starts by "pub_" & The secret key starts by "sec_"
+    sp_api = SPApi(PUBLIC_KEY, PRIVATE_KEY)
+
+    print(f"Token: {sp_api.login()}")
+
+    # sp_api.add_user()  # Create a new user (will be in the same company as you)
+
+    sp_api.logout()  # Logout the account, more safe to use it, to avoid potential attacks
+except APIError as e:
+    print(f"Failure using the Smart Prospective API: {e}")
