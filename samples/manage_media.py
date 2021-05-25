@@ -47,6 +47,13 @@ try:
     # Note: If in webview_details you need to give a file, as value of a key use sp_api.upload_media_template_file(file="...absolute path...")["url"]
     print(f"A new media has been created: {new_media['name']}")
 
+    # EDIT
+    # Note: Every field can be edited, be logic, only edit the used field according the media category
+    # Note: hidden_details contains custom values (json), you can use it as you want (avoid too large amount of data)
+    new_media = sp_api.edit_media(code=new_media["code"], hidden_details=json.dumps(
+        {"extra_text": "Extra Value"}), webview_details=json.dumps({"text1": "Value1 bis", "text2": "Value2 bis"}))  # Edit a media by updating some fields
+    print(f"The media {new_media['name']} has been edited: {new_media['hidden_details']}")
+
     # DOWNLOAD SOURCE FILE
     media_filepath = sp_api.download_src_media(new_media["code"])  # Download the media file, originaly uploaded (only the category with 'file' attibute during add)
     # Note: the filename can be given (no extension because will be auto set) (the filename can include the filepath which will be created if not yet)

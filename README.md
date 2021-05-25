@@ -5,7 +5,7 @@ This python library is made to connect to Smart Prospective API, in order to man
 
 Installation
 ------------
-```python3 pip install smart-prospective-api```
+```python3 -m pip install smart-prospective-api```
 
 Compatibility
 -------------

@@ -171,7 +171,7 @@ class SPApi():
     @is_login
     @supported_parameters(["category", "name", "comment", "tags", "force_fullscreen", "lock", "buildings", "material_groups", "materials",
                            "format_details", "condition_start", "condition_end", "condition_weather", "condition_time", "frequency",
-                           "print_min", "print_max", "animation_start", "animation_end", "male", "female", "both", "age_zero_fifteen",
+                           "print_min", "print_max", "animation_start", "animation_end", "hidden_details", "male", "female", "both", "age_zero_fifteen",
                            "age_sixteen_twenty_eight", "age_twenty_nine_thirty_six", "age_thirty_seven_fifty", "age_fifty_one_ninty_nine",
                            "interests", "pcs_farmer", "pcs_worker", "pcs_retirees", "pcs_intermediate_professions", "pcs_employee",
                            "pcs_student", "pcs_unemployed", "pcs_craftsmen", "pcs_managment_nd_profession", "vistor_type_new",
@@ -206,6 +206,46 @@ class SPApi():
         kwargs["token"] = self.token
         media = default_post(kwargs, f"medias/add/{category}")["media"]
         getLogger().info("Media {media['name']} created!")
+        return media
+
+    @is_login
+    @supported_parameters(["code", "name", "comment", "tags", "force_fullscreen", "lock", "buildings", "material_groups", "materials",
+                           "format_details", "condition_start", "condition_end", "condition_weather", "condition_time", "frequency",
+                           "print_min", "print_max", "animation_start", "animation_end", "hidden_details", "male", "female", "both", "age_zero_fifteen",
+                           "age_sixteen_twenty_eight", "age_twenty_nine_thirty_six", "age_thirty_seven_fifty", "age_fifty_one_ninty_nine",
+                           "interests", "pcs_farmer", "pcs_worker", "pcs_retirees", "pcs_intermediate_professions", "pcs_employee",
+                           "pcs_student", "pcs_unemployed", "pcs_craftsmen", "pcs_managment_nd_profession", "vistor_type_new",
+                           "vistor_type_frequent", "vistor_type_occasional", "vistor_type_everybody", "specific_duration", "keep_audio",
+                           "url", "file", "post_accounts", "webview_details", "webviewtemplate"])
+    def edit_media(self, code, **kwargs):
+        # If file is given -> Double request: 1st Media File Upload -> 2nd add media
+        if "file" in kwargs:
+            file_input = None
+            with open(kwargs["file"], "rb") as f:
+                file_input = default_post({
+                    "token": self.token
+                }, "medias/upload", files={"file": f})["file"]["code"]
+            if not file_input:
+                getLogger().error(f"SPApi.edit_media: Error from file upload\nFile after upload:{file_input}")
+                raise APIError(f"Failure on file upload")
+            # Field convertion "file" -> "file_input"
+            kwargs["file_input"] = file_input
+            del kwargs["file"]
+        # Field convertion "post_accounts" -> "post_accounts_text"
+        if "post_accounts" in kwargs:
+            kwargs["post_accounts_text"] = ",".join(kwargs["post_accounts"])
+            del kwargs["post_accounts"]
+        # Field convertion "tags" -> "tags_text"
+        if "tags" in kwargs:
+            kwargs["tags_text"] = ",".join(kwargs["tags"])
+            del kwargs["tags"]
+        # Field convertion "interests" -> "interests_text"
+        if "interests" in kwargs:
+            kwargs["interests_text"] = ",".join(kwargs["interests"])
+            del kwargs["interests"]
+        kwargs["token"] = self.token
+        media = default_post(kwargs, f"medias/edit/{code}")["media"]
+        getLogger().info("Media {media['name']} edited!")
         return media
 
     @is_login
