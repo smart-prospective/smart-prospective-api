@@ -5,7 +5,7 @@ from setuptools import setup
 README = (pathlib.Path(__file__).parent / "README.md").read_text()
 
 setup(name='smart-prospective-api',
-      version='1.1.0',
+      version='1.2.0',
       description='The Official Python client for Smart Prospective API',
       long_description=README,
       long_description_content_type="text/markdown",

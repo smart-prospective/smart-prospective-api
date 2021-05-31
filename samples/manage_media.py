@@ -40,6 +40,20 @@ try:
     new_media = sp_api.add_media(category="youtube", name=random_string(8), url="https://www.youtube.com/watch?v=ReEgXh-wURs", keep_audio=True)  # Create a new media (you will be the creator)
     # Web
     new_media = sp_api.add_media(category="web", name=random_string(8), url="https://smartprospective.com")  # Create a new media (you will be the creator)
+    # Banner (The banner is not a real media, it cannot be displayed alone, but in order to configure a MaterialDivision, the banner is used as a Media)
+    # Configuration:
+    # Accepted font => See the list on the smartprospective project description
+    # Accepted color => 'white', 'black', 'red', 'yellow', 'orange', 'green', 'blue'
+    # Accepted speed => 150, 200, 250, 300, 350, 400, 450
+    # Accepted position => 'top', 'center', 'bottom'
+    # position_unset (if set it will override POSITION) The position in % from the top of the screen (0= top, 100= bottom) => int between 0, 100
+    # margin => default 300
+    # font_size => default 45
+    # bg_color => string color in HEX
+    # bg_opacity (0= transparent, 1= opaque) => float between 0, 1
+    new_media = sp_api.add_media(category="banner", name=random_string(8), banner_texts_details=["Votre magasin ferme exceptionnellement ses portes à 20h"], twitter_post_accounts=["@BarackObama", "@Youtube"], facebook_post_accounts=["Mr. Bean"],
+        rss_post_accounts=["https://www.asiaflash.com/horoscope/rss_horojour_poissons.xml", "https://www.ouest-france.fr/rss-en-continu.xml?tid=75258"], instagram_post_accounts=["@selenagomez", "@itsdougthepug"],
+        font="Helvetica", font_size=45, color="white", bg_color="#000000", bg_opacity=0.5, speed=300, position="top", margin=300)  # Create a new media (you will be the creator)
     # Template
     # Note: webview_details contains all the value (json) to fill the template
     new_media = sp_api.add_media(category="template", name=random_string(8), webview_details=json.dumps(
