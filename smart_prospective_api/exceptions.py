@@ -1,6 +1,3 @@
-from django.http import JsonResponse
-
-
 class APIError(RuntimeError):
     """
     Exception for a API error, can be converted into an error
