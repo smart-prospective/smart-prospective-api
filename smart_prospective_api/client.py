@@ -59,7 +59,7 @@ class SPApi():
     def add_user(self, **kwargs):
         kwargs["token"] = self.token
         user = default_post(kwargs, "users/add")["user"]
-        getLogger().info("User {user['name']} created!")
+        getLogger().info(f"User {user['name']} created!")
         return user
 
     @is_login
@@ -68,7 +68,7 @@ class SPApi():
             "token": self.token,
             "user_code": code
         }, "users/remove")
-        getLogger().info("User {code} deleted!")
+        getLogger().info(f"User {code} deleted!")
 
     # Materials
     @is_login
@@ -88,7 +88,7 @@ class SPApi():
     def add_material(self, **kwargs):
         kwargs["token"] = self.token
         material = default_post(kwargs, "materials/add")["material"]
-        getLogger().info("Material {material['name']} created!")
+        getLogger().info(f"Material {material['name']} created!")
         return material
 
     @is_login
@@ -98,9 +98,9 @@ class SPApi():
             "material_code": code
         }, "materials/reboot")["status"]
         if status:
-            getLogger().info("Material {code} will reboot!")
+            getLogger().info(f"Material {code} will reboot!")
         else:
-            getLogger().warning("Material {code} has already been asked to reboot, need to wait!")
+            getLogger().warning(f"Material {code} has already been asked to reboot, need to wait!")
         return status
 
     @is_login
@@ -110,9 +110,9 @@ class SPApi():
             "material_code": code
         }, "materials/refresh")["status"]
         if status:
-            getLogger().info("Material {code} will be refreshed!")
+            getLogger().info(f"Material {code} will be refreshed!")
         else:
-            getLogger().warning("Material {code} has already been asked to refresh, need to wait!")
+            getLogger().warning(f"Material {code} has already been asked to refresh, need to wait!")
         return status
 
     # Material Groups
@@ -132,7 +132,7 @@ class SPApi():
     def add_materialgroup(self, **kwargs):
         kwargs["token"] = self.token
         materialgroup = default_post(kwargs, "material-groups/add")["materialgroup"]
-        getLogger().info("Material Group {materialgroup['name']} created!")
+        getLogger().info(f"Material Group {materialgroup['name']} created!")
         return materialgroup
 
     @is_login
@@ -141,7 +141,7 @@ class SPApi():
             "token": self.token,
             "materialgroup_code": code
         }, "material-groups/remove")
-        getLogger().info("User {code} deleted!")
+        getLogger().info(f"User {code} deleted!")
 
     # Buildings
     @is_login
@@ -230,7 +230,7 @@ class SPApi():
             del kwargs["interests"]
         kwargs["token"] = self.token
         media = default_post(kwargs, f"medias/add/{category}")["media"]
-        getLogger().info("Media {media['name']} created!")
+        getLogger().info(f"Media {media['name']} created!")
         return media
 
     @is_login
@@ -295,7 +295,7 @@ class SPApi():
             del kwargs["interests"]
         kwargs["token"] = self.token
         media = default_post(kwargs, f"medias/edit/{code}")["media"]
-        getLogger().info("Media {media['name']} edited!")
+        getLogger().info(f"Media {media['name']} edited!")
         return media
 
     @is_login
@@ -333,9 +333,9 @@ class SPApi():
             "media_code": media_code
         }, "medias/disable")["status"]
         if status:
-            getLogger().info("Media {code} has been disable!")
+            getLogger().info(f"Media {media_code} has been disable!")
         else:
-            getLogger().warning("Media {code} cannot be disable!")
+            getLogger().warning(f"Media {media_code} cannot be disable!")
         return status
 
     @is_login
@@ -345,9 +345,9 @@ class SPApi():
             "media_code": media_code
         }, "medias/enable")["status"]
         if status:
-            getLogger().info("Media {code} has been enable!")
+            getLogger().info(f"Media {media_code} has been enable!")
         else:
-            getLogger().warning("Media {code} cannot be enable!")
+            getLogger().warning(f"Media {media_code} cannot be enable!")
         return status
 
     @is_login
@@ -356,7 +356,7 @@ class SPApi():
             "token": self.token,
             "media_code": code
         }, "medias/remove")
-        getLogger().info("Media {code} deleted!")
+        getLogger().info(f"Media {code} deleted!")
 
     # WebviewTemplate
 
@@ -370,3 +370,11 @@ class SPApi():
             :return: The list of webviewtemplates
         """
         return default_get(self.token, "webviewtemplates")["webviewtemplates"]
+
+    @is_login
+    def update_requirements_webviewtemplates(self, code, requirements):
+        webviewtemplate = default_post({
+            "token": self.token,
+            "requirements": requirements}, f"webviewtemplates/edit/{code}")["webviewtemplate"]
+        getLogger().info(f"Webviewtemplate {webviewtemplate['name']} edited!")
+        return webviewtemplate
